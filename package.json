@@ -1,8 +1,10 @@
 {
-  "name": "saeeidi-rad-blog",
+  "name": "blog-app",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {},
+  "main": "server.js",
+  "scripts": {
+    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfigs.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
@@ -29,6 +32,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv-cli": "^7.4.2",
     "nodemon": "^3.1.4",
     "sequelize-cli": "^6.6.2"
