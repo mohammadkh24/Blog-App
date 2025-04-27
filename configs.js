@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-console.log(process.env.DB_DIALECT);
 
 module.exports = {
   db: {
@@ -24,7 +23,9 @@ module.exports = {
     google: {},
   },
 
-  redis: {},
+  redis: {
+    port : process.env.REDIS_URI
+  },
 
   domain: process.env.DOMAIN,
 

@@ -10,41 +10,41 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
       },
       name: {
-        Types: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       username: {
-        Types: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
       email: {
-        Types: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
       password: {
-        Types: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       role: {
-        Types: Sequelize.ENUM,
+        type: Sequelize.ENUM,
         values: ["User", "Admin"],
         allowNull: true,
-        default: "User",
+        defaultValue: "User",
       },
       provider: {
-        Types: Sequelize.ENUM,
+        type: Sequelize.ENUM,
         values: ["google", "local"],
         allowNull: false,
-        default: "local",
+        defaultValue: "local",
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.NOW,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.NOW,

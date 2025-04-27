@@ -1,7 +1,6 @@
 "use strict";
 
-const { Reference } = require("yup");
-const { sequelize } = require("../models3");
+const { sequelize } = require("../models");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -13,40 +12,36 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: "users",
+          model: "users", 
           key: "id",
         },
-
-        onDelete: "CASCADE",
+        onDelete: "CASCADE", 
       });
 
-      await queryInterface.addColumn("tags_articles", {
+      await queryInterface.createTable("tags_articles", {
         article_id: {
           type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,
-          Reference: {
-            model: "articles",
+          references: {
+            model: "articles", 
             key: "id",
           },
-
           onDelete: "CASCADE",
         },
-      });
-      await queryInterface.addColumn("tags_articles", {
+
         tags_id: {
           type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,
-          Reference: {
-            model: "tags",
+          references: {
+            model: "tags", // مدل tags که با id در ارتباط است
             key: "id",
           },
-
           onDelete: "CASCADE",
         },
       });
 
       await queryInterface.addConstraint("tags_articles", {
-        fields: ["article_id", "tag_id"],
+        fields: ["article_id", "tags_id"], 
         type: "unique",
         name: "unique_article_tag",
       });
@@ -62,13 +57,13 @@ module.exports = {
 
     try {
       await queryInterface.removeColumn("articles", "author_id");
+
       await queryInterface.dropTable("tags_articles");
+
       await transAction.commit();
     } catch (error) {
-      transAction.rollback();
+      await transAction.rollback();
       throw error;
     }
-
-    await queryInterface.dropTable("relations");
   },
 };

@@ -1,13 +1,11 @@
-const { DataTypes } = require("sequelize");
-const db = require("../db");
 
-const Tag = (sequelize) => {
+const Tag = (sequelize , DataTypes) => {
   return sequelize.define(
     "Tag",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
-        primarykey: true,
+        primaryKey: true,
         autoIncrement: true,
       },
       title: {

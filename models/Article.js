@@ -1,14 +1,12 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../models");
-const db = require("../db");
+const db = require("../db")
 
-const Article = (sequelize) => {
+const Article = (sequelize , DataTypes) => {
   return sequelize.define(
     "Article",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
-        primarykey: true,
+        primaryKey : true,
         autoIncrement: true,
       },
       title: {

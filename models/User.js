@@ -1,44 +1,43 @@
-const { Types } = require("mysql2");
-const { DataTypes } = require("sequelize");
+const {DataTypes} = require("sequelize")
 
-const User = (sequelize) => {
+const User = (sequelize ) => {
   return sequelize.define(
     "User",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
-        primarykey: true,
+        primaryKey: true,
         autoIncrement: true,
       },
       name: {
-        Types: DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       username: {
-        Types: DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique : true
       },
       email: {
-        Types: DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },
       password: {
-        Types: DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       role: {
-        Types: DataTypes.ENUM,
+        type: DataTypes.ENUM,
         values: ["User", "Admin"],
-        allowNull: true,
-        default: "User",
+        allowNull: false,
+        defaultValue: "User",
       },
       provider: {
-        Types: DataTypes.ENUM,
+        type: DataTypes.ENUM,
         values: ["google", "local"],
-        allowNull: false,
-        default: "local",
+        allowNull: true,
+        defaultValue: "local",
       },
     },
     {

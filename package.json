@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfigs.js"
+    "dev": "nodemon",
+    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfigs.js",
+    "migrate": "dotenv -e .env -- sequelize-cli db:migrate --config ./sequelizeConfigs.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.19.2",
+    "express-validator": "^7.2.1",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",

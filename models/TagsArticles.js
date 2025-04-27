@@ -1,8 +1,6 @@
-const { sequelize } = require("../models3");
-const { db } = require("../db");
 
-const TagsArticles = (sequelize) => {
-  return db.define(
+const TagsArticles = (sequelize , DataTypes) => {
+  return sequelize.define(
     "tags_articles",
     {},
     {
