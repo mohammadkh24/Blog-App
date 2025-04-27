@@ -1,12 +1,25 @@
-const LocalStrategy = require('passport-local').Strategy;
+const { where } = require("sequelize");
+const { User } = require("../db");
+const { raw } = require("mysql2");
+const bcrypt = require("bcrypt");
 
-const localStrategy = new LocalStrategy((username, password, done) => {
-  // اینجا باید کاربر رو بررسی کنی (از دیتابیس، فایل یا هر چی)
-  if (username === 'admin' && password === '1234') {
-    return done(null, { id: 1, username: 'admin' });
-  } else {
-    return done(null, false, { message: 'نام کاربری یا رمز عبور اشتباه است' });
+const LocalStrategy = require("passport-local").Strategy;
+
+module.exports = new LocalStrategy(async (username, password, done) => {
+  const user = await User.findOne({
+    where: {
+      username,
+    },
+    raw: true,
+  });
+
+  if (!user) return done(null, false);
+
+  const isValidPassword = await bcrypt.compare(password, user.password);
+
+  if (!isValidPassword) {
+    return done(null, false);
   }
-});
 
-module.exports = localStrategy;
+  return done(null, user);
+});

@@ -22,14 +22,14 @@ exports.register = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const usersCount = await User.count()
+    const usersCount = await User.count();
 
     const user = await User.create({
       name,
       username,
       email,
       password: hashedPassword,
-        role : usersCount === 0 ? "Admin" : "User"
+      role: usersCount === 0 ? "Admin" : "User",
     });
 
     const accessToken = jwt.sign(
@@ -71,6 +71,41 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req,res,next) => {
-    
-}
+exports.login = async (req, res, next) => {
+  try {
+    const user = req.user;
+
+    const accessToken = jwt.sign(
+      { id: user.id, role: user.role },
+      configs.auth.accessTokenSecretKey,
+      {
+        expiresIn: configs.auth.accessTokenExpiresInSeconds + "s",
+      }
+    );
+
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      configs.auth.refreshTokenSecretKey,
+      {
+        expiresIn: configs.auth.refreshTokenExpiresInSeconds + "s",
+      }
+    );
+
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 12);
+
+    await redis.set(
+      `RefreshToken:${user.id}:`,
+      hashedRefreshToken,
+      "EX",
+      configs.auth.refreshTokenExpiresInSeconds
+    );
+
+    return res.status(200).json({
+      message: "Login successfully",
+      accessToken,
+      refreshToken,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
