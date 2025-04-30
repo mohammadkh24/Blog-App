@@ -17,7 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 
-passport.use(localStrategy); 
+passport.use(localStrategy);
+// passport.use("accessToken") 
 
 // Routes
 app.get("/captcha" , captchaController.get)
