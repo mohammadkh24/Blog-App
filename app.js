@@ -7,9 +7,13 @@ const fs = require("fs");
 const authRoute = require("./routes/auth")
 const articlesRoute = require("./routes/articles")
 
-const localStrategy = require("./strategies/localStrategy")
+const localStrategy = require("./strategies/localStrategy");
+const jwtAccesssStrategy = require("./strategies/jwtAccesssStrategy");
 
 const app  = express();
+
+app.use(express.static(path.join(__dirname, "public")));
+
 
 // Set cors
 app.use(cors());
@@ -18,11 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 
 passport.use(localStrategy);
-// passport.use("accessToken") 
+passport.use("accessToken" , jwtAccesssStrategy);
+app.use(passport.initialize());
 
 // Routes
 app.get("/captcha" , captchaController.get)
 app.use("/auth" , authRoute)
-app.use("/articles" , articlesRoute)
+app.use("/articles" , articlesRoute);
 
 module.exports = app

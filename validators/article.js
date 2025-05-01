@@ -15,23 +15,27 @@ const articleValidator = [
     .isLength({ min: 20 })
     .withMessage("Content must be at least 20 characters long."),
 
-  body("slug")
-    .trim()
-    .notEmpty()
-    .withMessage("Slug is required.")
-    .matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-    .withMessage(
-      "Slug must be URL-friendly (lowercase letters, numbers, hyphens)."
-    ),
-    
   body("tags")
-    .isArray({ min: 1 })
-
-    .custom((tags) => {
-      const isValid = tags.every(
-        (tag) => typeof tag === "string" && tag.trim() !== ""
+    .customSanitizer((value) => {
+      if (typeof value === "string") {
+        try {
+          return JSON.parse(value);
+        } catch (err) {
+          return value;
+        }
+      }
+      return value;
+    })
+    .custom((value) => {
+      if (!Array.isArray(value)) {
+        throw new Error("Tags must be a valid array.");
+      }
+      const allValid = value.every(
+        (tag) => typeof tag === "string" && tag.trim().length > 0
       );
-      if (!isValid) throw new Error("Each tag must be a non-empty string.");
+      if (!allValid) {
+        throw new Error("Each tag must be a non-empty string.");
+      }
       return true;
     }),
 ];

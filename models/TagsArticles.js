@@ -5,7 +5,7 @@ const TagsArticles = (sequelize , DataTypes) => {
     {},
     {
       tableName: "tags_articles",
-      timestamps: true,
+      timestamps: false,
     }
   );
 };

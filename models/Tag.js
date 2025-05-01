@@ -14,8 +14,8 @@ const Tag = (sequelize , DataTypes) => {
       },
     },
     {
-      tableName: "tag",
-      timestamps: true,
+      tableName: "tags",
+      timestamps: false,
     }
   );
 };

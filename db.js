@@ -38,7 +38,7 @@ Article.belongsToMany(Tag, {
 Tag.belongsToMany(Article, {
   through: TagsArticles,
   onDelete: "CASCADE",
-  foreignKey: "tag_id",
+  foreignKey: "tags_id",
 });
 
 module.exports = {db , User , Tag , Article , TagsArticles}
