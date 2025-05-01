@@ -1,6 +1,7 @@
 const { default: slugify } = require("slugify");
-const { Article, Tag } = require("../db");
+const { Article, Tag, User } = require("../db");
 const { where } = require("sequelize");
+const { raw } = require("mysql2");
 
 exports.create = async (req, res, next) => {
   try {
@@ -57,4 +58,38 @@ exports.create = async (req, res, next) => {
     console.log(error);
     next(error);
   }
+};
+
+//! Fixed bug
+exports.getBySlug = async (req, res, next) => {
+  const article = await Article.findOne({
+    where: {
+      slug: req.params.slug,
+    },
+
+    attributes: {
+      exclude: ["author_id"],
+    },
+    include: [
+      {
+        model: User,
+        attributes: {
+          exclude: ["password"],
+        },
+        as: "author",
+      },
+
+      {
+        model: Tag,
+        attributes: ["title"],
+        through : {
+            attributes : []
+        },
+      },
+    ],
+  });
+
+  console.log(article);
+
+  return res.json({article });
 };
